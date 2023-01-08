@@ -1,71 +1,81 @@
-import { FC, useState } from 'react';
-import { StatusBar, StyleSheet, Text, View, Image, TouchableOpacity, Button, Alert, TextInput } from 'react-native';
+import { FC, useState, useEffect } from 'react';
+import { StatusBar, StyleSheet, Text, View, Image, TouchableHighlight, TouchableOpacity, Button, Alert, TextInput } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import Ionicons from '@expo/vector-icons/Ionicons';
 
+import StudentList from './StudentsList';
+import StudentDetails from './StudentDetails';
+import StudentAdd from './StudentAdd';
 
-const Brick: FC<{ onClick: () => void, getCurrentPlayer: () => number }> = (props) => {
-  const [player, setPlayer] = useState(0)
-  const onClick = () => {
-    setPlayer(props.getCurrentPlayer())
-    props.onClick()
-  }
-  const getBackground = () => {
-    if (player == 0) {
-      return 'white'
-    } else if (player == 1) {
-      return 'red'
-    }
-    return 'green'
-  }
+const InfoScreen: FC<{ route: any, navigation: any }> = ({ route, navigation }) => {
   return (
-    <View style={styles.brick}>
-      <TouchableOpacity style={[styles.button, { backgroundColor: getBackground() }]} onPress={onClick}>
-      </TouchableOpacity>
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>Info Screen</Text>
     </View>
-  )
-}
-const App: FC = () => {
-  // 0: not selected, 1: 'x', 2: 'o'
-  var turn = 1
-
-  const getCurrentPlayer = () => {
-    return turn
-  }
-  const onBrickClick = () => {
-    console.log('onBrickClick')
-    if (turn == 1) {
-      turn = 2
-    } else {
-      turn = 1
-    }
-  }
-
-  console.log("My app is running")
-
-  const onPressCallback = () => {
-    console.log("button was pressed")
-  }
-
-  return (
-    <View style={styles.container}>
-      <View style={styles.row}>
-        <Brick onClick={onBrickClick} getCurrentPlayer={getCurrentPlayer}></Brick>
-        <Brick onClick={onBrickClick} getCurrentPlayer={getCurrentPlayer}></Brick>
-        <Brick onClick={onBrickClick} getCurrentPlayer={getCurrentPlayer}></Brick>
-      </View>
-      <View style={styles.row}>
-        <Brick onClick={onBrickClick} getCurrentPlayer={getCurrentPlayer}></Brick>
-        <Brick onClick={onBrickClick} getCurrentPlayer={getCurrentPlayer}></Brick>
-        <Brick onClick={onBrickClick} getCurrentPlayer={getCurrentPlayer}></Brick>
-      </View>
-      <View style={styles.row}>
-        <Brick onClick={onBrickClick} getCurrentPlayer={getCurrentPlayer}></Brick>
-        <Brick onClick={onBrickClick} getCurrentPlayer={getCurrentPlayer}></Brick>
-        <Brick onClick={onBrickClick} getCurrentPlayer={getCurrentPlayer}></Brick>
-      </View>
-    </View >
   );
 }
 
+
+
+const StudentStack = createNativeStackNavigator();
+const StudentStackCp: FC<{ route: any, navigation: any }> = ({ route, navigation }) => {
+  const addNewStudents = () => {
+    navigation.navigate('StudentAdd')
+  }
+  return (
+    <StudentStack.Navigator>
+      <StudentStack.Screen name="StudentList" component={StudentList} options={{
+        headerRight: () => (
+          <TouchableOpacity
+            onPress={addNewStudents}>
+            <Ionicons name={'add-outline'} size={40} color={'gray'} />
+          </TouchableOpacity>
+        ),
+      }
+      } />
+      <StudentStack.Screen name="StudentDetails" component={StudentDetails} />
+      <StudentStack.Screen name="StudentAdd" component={StudentAdd} />
+    </StudentStack.Navigator>
+  );
+}
+
+const Tab = createBottomTabNavigator();
+const App: FC = () => {
+  return (
+    <NavigationContainer>
+      <Tab.Navigator screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName = "";
+          if (route.name === 'InfoScreen') {
+            iconName = focused
+              ? 'information-circle'
+              : 'information-circle-outline';
+          } else if (route.name === 'StudentStackCp') {
+            iconName = focused ? 'list-circle' : 'list-circle-outline';
+          }
+
+          // You can return any component that you like here!
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+        tabBarActiveTintColor: 'tomato',
+        tabBarInactiveTintColor: 'gray',
+      })}>
+        <Tab.Screen name="StudentStackCp" component={StudentStackCp} options={{ headerShown: false }} />
+        <Tab.Screen name="InfoScreen" component={InfoScreen} />
+      </Tab.Navigator>
+
+    </NavigationContainer>
+  );
+}
+
+
+// const App: FC = () => {
+//   return (
+//     <StudentDetails></StudentDetails>
+//   )
+// };
 
 const styles = StyleSheet.create({
   container: {
@@ -73,19 +83,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'grey',
   },
-  row: {
-    flexDirection: 'row',
-    backgroundColor: 'blue',
-  },
-  brick: {
-    flex: 1,
-    backgroundColor: 'white',
-    margin: 5,
-    aspectRatio: 1,
-  },
-  button: {
-    flex: 1,
-  },
+
 });
 
 export default App
