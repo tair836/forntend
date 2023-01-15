@@ -1,7 +1,7 @@
 import { FC, useState, useEffect } from 'react';
 import { StatusBar, StyleSheet, Text, View, Image, TouchableOpacity, Button, Alert, TextInput, FlatList, TouchableHighlight } from 'react-native';
 
-import StudentModel, { Student } from './model/StudentModel';
+import StudentModel, { Student } from '../model/StudentModel';
 
 const ListItem: FC<{ name: String, id: String, image: String, onRowSelected: (id: String) => void }> =
     ({ name, id, image, onRowSelected }) => {
@@ -9,11 +9,14 @@ const ListItem: FC<{ name: String, id: String, image: String, onRowSelected: (id
             console.log('int he row: row was selected ' + id)
             onRowSelected(id)
         }
+
+        console.log("image: " + image)
         return (
             <TouchableHighlight onPress={onClick} underlayColor={'gainsboro'}>
                 <View style={styles.listRow}>
-                    <Image style={styles.listRowImage}
-                        source={require('./assets/ava.png')} />
+                    {image == "" && <Image style={styles.listRowImage} source={require('../assets/ava.png')} />}
+                    {image != "" && <Image style={styles.listRowImage} source={{ uri: image.toString() }} />}
+
                     <View style={styles.listRowTextContainer}>
                         <Text style={styles.listRowName}>{name}</Text>
                         <Text style={styles.listRowId}>{id}</Text>
@@ -33,12 +36,22 @@ const StudentList: FC<{ route: any, navigation: any }> = ({ route, navigation })
     const [students, setStudents] = useState<Array<Student>>();
 
     useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', () => {
+        const unsubscribe = navigation.addListener('focus', async () => {
             console.log('focus')
-            setStudents(StudentModel.getAllStudents())
+            let students: Student[] = []
+            try {
+                students = await StudentModel.getAllStudents()
+                console.log("fetching students complete")
+            } catch (err) {
+                console.log("fail fetching students " + err)
+            }
+            console.log("fetching finish")
+            setStudents(students)
         })
         return unsubscribe
     })
+
+
     return (
         <FlatList style={styles.flatlist}
             data={students}
@@ -85,8 +98,6 @@ const styles = StyleSheet.create({
     listRowId: {
         fontSize: 25
     }
-
-
 });
 
 export default StudentList

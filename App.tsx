@@ -5,9 +5,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-import StudentList from './StudentsList';
-import StudentDetails from './StudentDetails';
-import StudentAdd from './StudentAdd';
+import StudentList from './componnents/StudentsList';
+import StudentDetails from './componnents/StudentDetails';
+import StudentAdd from './componnents/StudentAdd';
 
 const InfoScreen: FC<{ route: any, navigation: any }> = ({ route, navigation }) => {
   return (
