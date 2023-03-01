@@ -1,89 +1,66 @@
-import { FC, useState, useEffect } from 'react';
-import { StatusBar, StyleSheet, Text, View, Image, TouchableHighlight, TouchableOpacity, Button, Alert, TextInput } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import Ionicons from '@expo/vector-icons/Ionicons';
+import { FC, useState, useEffect } from "react";
+import {
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  Button,
+  Alert,
+  TextInput,
+  TouchableHighlight,
+} from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import StudentList from './componnents/StudentsList';
-import StudentDetails from './componnents/StudentDetails';
-import StudentAdd from './componnents/StudentAdd';
+import Register from "./components/Register_component";
+import Login from "./components/Login_component";
+import apiClient from "./api/ClientApi";
 
-const InfoScreen: FC<{ route: any, navigation: any }> = ({ route, navigation }) => {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Info Screen</Text>
-    </View>
-  );
-}
+const LoginStack = createNativeStackNavigator();
 
-
-
-const StudentStack = createNativeStackNavigator();
-const StudentStackCp: FC<{ route: any, navigation: any }> = ({ route, navigation }) => {
-  const addNewStudents = () => {
-    navigation.navigate('StudentAdd')
+const updateToken = async (setToken: any) => {
+  const token = await AsyncStorage.getItem("accessToken");
+  await AsyncStorage.clear();
+  if (token != null) {
+    apiClient.setHeader("Authorization", "JWT " + token);
+    return setToken(token);
   }
-  return (
-    <StudentStack.Navigator>
-      <StudentStack.Screen name="StudentList" component={StudentList} options={{
-        headerRight: () => (
-          <TouchableOpacity
-            onPress={addNewStudents}>
-            <Ionicons name={'add-outline'} size={40} color={'gray'} />
-          </TouchableOpacity>
-        ),
-      }
-      } />
-      <StudentStack.Screen name="StudentDetails" component={StudentDetails} />
-      <StudentStack.Screen name="StudentAdd" component={StudentAdd} />
-    </StudentStack.Navigator>
-  );
-}
+};
 
 const Tab = createBottomTabNavigator();
 const App: FC = () => {
-  return (
-    <NavigationContainer>
-      <Tab.Navigator screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
-          let iconName = "";
-          if (route.name === 'InfoScreen') {
-            iconName = focused
-              ? 'information-circle'
-              : 'information-circle-outline';
-          } else if (route.name === 'StudentStackCp') {
-            iconName = focused ? 'list-circle' : 'list-circle-outline';
-          }
-
-          // You can return any component that you like here!
-          return <Ionicons name={iconName} size={size} color={color} />;
-        },
-        tabBarActiveTintColor: 'tomato',
-        tabBarInactiveTintColor: 'gray',
-      })}>
-        <Tab.Screen name="StudentStackCp" component={StudentStackCp} options={{ headerShown: false }} />
-        <Tab.Screen name="InfoScreen" component={InfoScreen} />
-      </Tab.Navigator>
-
-    </NavigationContainer>
-  );
-}
-
-
-// const App: FC = () => {
-//   return (
-//     <StudentDetails></StudentDetails>
-//   )
-// };
+  const [token, setToken] = useState();
+  updateToken(setToken);
+  if (!token) {
+    return (
+      <NavigationContainer>
+        <LoginStack.Navigator>
+          <LoginStack.Screen name="Login">
+            {(props) => (
+              <Login
+                route={props.route}
+                navigation={props.navigation}
+                setToken={setToken}
+              />
+            )}
+          </LoginStack.Screen>
+          <LoginStack.Screen name="Register" component={Register} />
+        </LoginStack.Navigator>
+      </NavigationContainer>
+    );
+  }
+};
 
 const styles = StyleSheet.create({
   container: {
     marginTop: StatusBar.currentHeight,
     flex: 1,
-    backgroundColor: 'grey',
   },
-
 });
 
-export default App
+export default App;
