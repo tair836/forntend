@@ -198,11 +198,10 @@ const Chat: FC<{ route: any; navigation: any }> = ({ route, navigation }) => {
         </TouchableOpacity>
       </View>
       <ActivityIndicator
-        color={"#93D1C1"}
-        size={180}
+        color={"#F05454"}
+        size={50}
         animating={showActivityIndicator}
-        style={{ position: "absolute", marginTop: 150, marginStart: 120 }}
-      />
+        style={{ position: "absolute", marginTop: 250, marginStart: 170 }}      />
     </View>
   );
 };

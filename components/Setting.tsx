@@ -150,11 +150,10 @@ const Setting: FC<{ route: any; navigation: any; setToken: any }> = ({
     <ScrollView>
       <View style={styles.container}>
         <ActivityIndicator
-          color={"#93D1C1"}
-          size={130}
+          color={"#F05454"}
+          size={50}
           animating={showActivityIndicator}
-          style={{ position: "absolute", marginTop: 230, marginStart: 140 }}
-        />
+          style={{ position: "absolute", marginTop: 250, marginStart: 170 }}        />
         <View>
           {avatarUri == "" && (
             <Image

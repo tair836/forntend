@@ -16,15 +16,15 @@ import Login from "./components/Login";
 import apiClient from "./api/ClientApi";
 import Profile from "./components/Setting";
 import AddPost from "./components/AddPost";
-import PostsList from "./components/AllPosts";
-import MyPostsList from "./components/MyPosts";
+import AllPosts from "./components/AllPosts";
+import MyPosts from "./components/MyPosts";
 import EditPost from "./components/EditPost";
 import Chat from "./components/Chat";
 
 const LoginStack = createNativeStackNavigator();
-
 const PostStack = createNativeStackNavigator();
-const PostStackCp: FC<{ route: any; navigation: any }> = ({
+
+const Posts: FC<{ route: any; navigation: any }> = ({
   route,
   navigation,
 }) => {
@@ -34,8 +34,8 @@ const PostStackCp: FC<{ route: any; navigation: any }> = ({
   return (
     <PostStack.Navigator>
       <PostStack.Screen
-        name="PostsList"
-        component={PostsList}
+        name="AllPosts"
+        component={AllPosts}
         options={{
           headerRight: () => (
             <TouchableOpacity onPress={addNewPost}>
@@ -51,7 +51,7 @@ const PostStackCp: FC<{ route: any; navigation: any }> = ({
 
 // TODO - need to add edit post here
 const MyPostsStack = createNativeStackNavigator();
-const MyPostsStackCp: FC<{ route: any; navigation: any }> = ({
+const MyPost: FC<{ route: any; navigation: any }> = ({
   route,
   navigation,
 }) => {
@@ -61,8 +61,8 @@ const MyPostsStackCp: FC<{ route: any; navigation: any }> = ({
   return (
     <MyPostsStack.Navigator>
       <MyPostsStack.Screen
-        name="MyPostsList"
-        component={MyPostsList}
+        name="MyPosts"
+        component={MyPosts}
         options={{
           headerRight: () => (
             <TouchableOpacity onPress={addNewPost}>
@@ -110,37 +110,37 @@ const App: FC = () => {
   } else {
     return (
       <NavigationContainer>
-        <Tab.Navigator
-          screenOptions={({ route }) => ({
-            tabBarIcon: ({ focused, color, size }) => {
-              let iconName: any = "";
-              if (route.name === "MyPostsStackCp") {
-                iconName = focused ? "albums" : "albums-outline";
-              } else if (route.name === "PostStackCp") {
-                iconName = focused ? "list-circle" : "list-circle-outline";
-              } else if (route.name === "Profile") {
-                iconName = focused ? "person" : "person-outline";
-              } else if (route.name === "Chat") {
-                iconName = focused
-                  ? "chatbox-ellipses"
-                  : "chatbox-ellipses-outline";
-              }
-
-              // You can return any component that you like here!
-              return <Ionicons name={iconName} size={size} color={color} />;
-            },
-            tabBarActiveTintColor: "#009999",
-            tabBarInactiveTintColor: "gray",
-          })}
-        >
+      <Tab.Navigator screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName = "";
+          switch(route.name){
+            case 'Profile':
+              iconName = focused ? 'person-circle' : 'person-circle-outline'
+              break
+            case 'MyPost':
+              iconName = focused ? 'image' : 'image-outline'
+              break
+            case 'Posts':
+              iconName = focused ? 'images' : 'images-outline'
+              break
+            case 'Chat':
+              iconName = focused ? 'chatbubbles' : 'chatbubbles-outline'
+              break
+          }
+          // You can return any component that you like here! 
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+        tabBarActiveTintColor: '#F05454',
+        tabBarInactiveTintColor: '#30475E',
+      })}>
           <Tab.Screen
-            name="PostStackCp"
-            component={PostStackCp}
+            name="Posts"
+            component={Posts}
             options={{ headerShown: false }}
           />
           <Tab.Screen
-            name="MyPostsStackCp"
-            component={MyPostsStackCp}
+            name="MyPost"
+            component={MyPost}
             options={{ headerShown: false }}
           />
           <Tab.Screen name="Profile">
