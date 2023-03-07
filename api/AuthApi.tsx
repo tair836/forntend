@@ -1,6 +1,7 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import apiClient from "./ClientApi";
 
-const addNewUser = async (userJson: any) => {
+const addUser = async (userJson: any) => {
   return await apiClient.post("/auth/register", userJson);
 };
 
@@ -12,12 +13,15 @@ const loginUser = async (credentials: any) => {
   return await apiClient.post("/auth/login", credentials);
 };
 
+const logout = async () => {
+  return await apiClient.get("/auth/logout");
+};
+
 const getUserById = async (userId: String) => {
   return await apiClient.get("/auth/" + userId);
 };
 
 const updateUserById = async (userId: String, userDetails: any) => {
-  console.log(userId);
   return await apiClient.put("/auth/" + userId, userDetails);
 };
 
@@ -26,10 +30,11 @@ const refresh = async () => {
 };
 
 export default {
-  addNewUser,
+  addUser,
   uploadImage,
   loginUser,
   getUserById,
   updateUserById,
   refresh,
+  logout,
 };
