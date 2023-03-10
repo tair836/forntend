@@ -211,10 +211,10 @@ const Profile: FC<{ route: any; navigation: any; setToken: any }> = ({
           />
           <View style={styles.buttonsContainer}>
             <TouchableOpacity onPress={onSaveCallback} style={styles.button}>
-              <Text style={styles.buttonText}>Save</Text>
+              <Text style={styles.buttonText}>SAVE</Text>
             </TouchableOpacity>
           <TouchableOpacity onPress={onLogoutCallback} style={styles.button}>
-            <Text style={styles.buttonText}>Logout</Text>
+            <Text style={styles.buttonText}>LOGOUT</Text>
           </TouchableOpacity>
           </View>
           {errorMsg != "" && (

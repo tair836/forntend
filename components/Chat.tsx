@@ -34,7 +34,7 @@ const ListItem: FC<{
 }> = ({ sender, message, image, senderId }) => {
   
   return (
-    <TouchableHighlight underlayColor={"gainsboro"}>
+    <TouchableHighlight underlayColor={"#DDDDDD"}>
       <View
         style={{
           margin: 8,

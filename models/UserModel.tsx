@@ -12,11 +12,7 @@ export type User = {
 };
 
 const addUser = async (user: User) => {
-  console.log("addUser");
-  console.log("email: " + user.email);
-  console.log("name: " + user.name);
-  console.log("password: " + user.password);
-  console.log("imageUri: " + user.image);
+ 
   const data = {
     _email: user.email,
     name: user.name,
@@ -68,7 +64,6 @@ const loginUser = async (email: String, password: String) => {
 
 const logout = async () => {
   const refreshToken = await AsyncStorage.getItem("refreshToken");
-  console.log(refreshToken);
   apiClient.setHeader("Authorization", "JWT " + refreshToken);
   try {
     console.log("sent logout req");
@@ -85,8 +80,6 @@ const logout = async () => {
 const getUserById = async (userId: String) => {
   console.log("getUserById()");
   let res = await AuthApi.getUserById(userId);
-  console.log("res:");
-  console.log(res);
   if (res.status == 410) {
     res = await refresh();
     if (!res) {
@@ -102,8 +95,6 @@ const getUserById = async (userId: String) => {
 const updateUserById = async (userId: String, userDetails: any) => {
   console.log("updateUserById()");
   let res = await AuthApi.updateUserById(userId, userDetails);
-  console.log("res:");
-  console.log(res);
   if (res.status == 410) {
     console.log("status is 410");
     res = await refresh();
@@ -130,7 +121,6 @@ const refresh = async () => {
     return; //?????????/ TODO
   }
   console.log("end refresh");
-  console.log(res);
   // TODO - duplicte code!! maybe move to an new function with login
   apiClient.setHeader("Authorization", "JWT " + res.data.accessToken);
   await AsyncStorage.setItem("accessToken", res.data.accessToken);

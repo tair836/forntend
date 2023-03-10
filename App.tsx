@@ -64,6 +64,7 @@ const MyPost: FC<{ route: any; navigation: any }> = ({
         name="MyPosts"
         component={MyPosts}
         options={{
+          headerTintColor: '#30475E',
           headerRight: () => (
             <TouchableOpacity onPress={addNewPost}>
               <Ionicons name={"add-outline"} size={40} color={"#F05454"} />
@@ -71,8 +72,8 @@ const MyPost: FC<{ route: any; navigation: any }> = ({
           ),
         }}
       />
-      <MyPostsStack.Screen name="AddPost" component={AddPost} />
-      <MyPostsStack.Screen name="EditPost" component={EditPost} />
+      <MyPostsStack.Screen name="AddPost" component={AddPost} options={{headerTintColor: '#30475E'}} />
+      <MyPostsStack.Screen name="EditPost" component={EditPost} options={{headerTintColor: '#30475E'}}  />
     </MyPostsStack.Navigator>
   );
 };
@@ -153,7 +154,7 @@ const App: FC = () => {
               />
             )}
           </Tab.Screen>
-          <Tab.Screen name="Chat" component={Chat} />
+          <Tab.Screen name="Chat" component={Chat} options={{headerTintColor: '#30475E'}}/>
         </Tab.Navigator>
       </NavigationContainer>
     );

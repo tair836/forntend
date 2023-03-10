@@ -127,16 +127,8 @@ const EditPost: FC<{ route: any; navigation: any }> = ({
           animating={showActivityIndicator}
           style={{ position: "absolute", marginTop: 250, marginStart: 170 }}        />
         <View>
-          {imageUri == "" && (
-            <Image
-              style={styles.avatar}
-              source={require("../assets/avatar.png")}
-            ></Image>
-          )}
-          {imageUri != "" && (
-            <Image style={styles.avatar} source={{ uri: imageUri }}></Image>
-          )}
-
+        {imageUri == '' ?  <Image source={require("../assets/avatar.png")} style={styles.avatar}></Image>
+        : <Image source={{ uri: imageUri }} style={styles.avatar}></Image>}
           <TouchableOpacity onPress={openCamera}>
             <Ionicons
               name={"camera"}
@@ -156,7 +148,7 @@ const EditPost: FC<{ route: any; navigation: any }> = ({
         <TextInput
           style={styles.input}
           onChangeText={setPostDescription}
-          placeholder="Description"
+          placeholder="Write a caption"
           value={postDescription}
         />
         <View style={styles.buttonsContainer}>
@@ -203,18 +195,20 @@ const styles = StyleSheet.create({
   },
 
   buttonsContainer: {
+    // flex: 1,
     flexDirection: "row",
   },
   button: {
     flex: 1,
     margin: 12,
     padding: 12,
-    backgroundColor: "#009999",
+    backgroundColor: '#F05454',
     borderRadius: 10,
   },
   buttonText: {
     textAlign: "center",
-    color: "white",
+    color: "#DDDDDD",
+    fontSize: 20,
   },
   cameraButton: {
     position: "absolute",

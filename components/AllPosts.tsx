@@ -1,6 +1,5 @@
 import { FC, useState, useEffect } from "react";
 import {
-  StatusBar,
   StyleSheet,
   Text,
   View,
@@ -18,39 +17,17 @@ const ListItem: FC<{
   text: String;
   postImage: String;
 }> = ({ userEmail, userImage, text, postImage }) => {
-  console.log("image: " + postImage);
-  console.log("text: " + text);
   return (
-    <TouchableHighlight underlayColor={"gainsboro"}>
+    <TouchableHighlight underlayColor={"#DDDDDD"}>
       <View style={styles.list}>
         <View style={styles.listRow}>
-          {userImage == "" && (
-            <Image
-              style={styles.userImage}
-              source={require("../assets/avatar.png")}
-            />
-          )}
-          {userImage != "" && (
-            <Image
-              style={styles.userImage}
-              source={{ uri: userImage.toString() }}
-            />
-          )}
+        {userImage == '' ?  <Image source={require("../assets/avatar.png")} style={styles.userImage}></Image>
+    : <Image source={{ uri: userImage.toString() }} style={styles.userImage}></Image>} 
           <Text style={styles.listRowName}>{userEmail}</Text>
         </View>
         <View style={styles.listRowTextContainer}>
-          {postImage == "" && (
-            <Image
-              style={styles.listRowImage}
-              source={require("../assets/avatar.png")}
-            />
-          )}
-          {postImage != "" && (
-            <Image
-              style={styles.postImage}
-              source={{ uri: postImage.toString() }}
-            />
-          )}
+        {postImage == '' ?  <Image source={require("../assets/avatar.png")} style={styles.postImage}></Image>
+    : <Image source={{ uri: postImage.toString() }} style={styles.postImage}></Image>} 
           <Text style={styles.listRowName}>{text}</Text>
         </View>
       </View>
@@ -108,7 +85,6 @@ const AllPosts: FC<{ route: any; navigation: any }> = ({
 
 const styles = StyleSheet.create({
   container: {
-    //marginTop: StatusBar.currentHeight,
     flex: 1,
   },
   flatlist: {
@@ -121,14 +97,10 @@ const styles = StyleSheet.create({
     borderRadius: 2,
   },
   listRow: {
-    // margin: 4,
-    // flexDirection: "row",
-    // height: 150,
-    // elevation: 1,
     flexDirection: "row",
   },
   listRowImage: {
-    margin: 10,
+    margin: 5,
     resizeMode: "contain",
     height: 130,
     width: 130,
@@ -146,8 +118,8 @@ const styles = StyleSheet.create({
     fontSize: 25,
   },
   postImage: {
-    height: 320,
-    width: 320,
+    height: 250,
+    width: 300,
     alignSelf: "center",
   },
   userImage: {

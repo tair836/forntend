@@ -129,16 +129,8 @@ const AddPost: FC<{ route: any; navigation: any }> = ({
           style={{ position: "absolute", marginTop: 250, marginStart: 170 }}
         />
         <View>
-          {imageUri == "" && (
-            <Image
-              source={require("../assets/avatar.png")}
-              style={styles.avatar}
-            ></Image>
-          )}
-          {imageUri != "" && (
-            <Image source={{ uri: imageUri }} style={styles.avatar}></Image>
-          )}
-
+        {imageUri == '' ?  <Image source={require("../assets/avatar.png")} style={styles.avatar}></Image>
+           : <Image source={{ uri: imageUri }} style={styles.avatar}></Image>}
           <TouchableOpacity onPress={openCamera}>
             <Ionicons name={"camera"} style={styles.cameraButton} size={50} />
           </TouchableOpacity>
@@ -150,7 +142,7 @@ const AddPost: FC<{ route: any; navigation: any }> = ({
           style={styles.input}
           onChangeText={setText}
           value={text}
-          placeholder={"Text"}
+          placeholder={"Write a caption"}
         />
         <View style={styles.buttonsContainer}>
           <TouchableOpacity onPress={onCancelCallback} style={styles.button}>
@@ -204,19 +196,20 @@ const styles = StyleSheet.create({
     borderRadius: 3,
   },
   buttonsContainer: {
-    //flex: 1,
+    // flex: 1,
     flexDirection: "row",
   },
   button: {
     flex: 1,
     margin: 12,
     padding: 12,
-    backgroundColor: "#009999",
+    backgroundColor: '#F05454',
     borderRadius: 10,
   },
   buttonText: {
     textAlign: "center",
-    color: "white",
+    color: "#DDDDDD",
+    fontSize: 20,
   },
   cameraButton: {
     position: "absolute",

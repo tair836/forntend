@@ -1,32 +1,15 @@
 import { FC, useState } from "react";
-import {
-  StatusBar,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TouchableOpacity,
-  FlatList,
-  TouchableHighlight,
-  ActivityIndicator,
-} from "react-native";
+import { StatusBar,StyleSheet,Text,View,Image,TouchableOpacity,FlatList,TouchableHighlight,ActivityIndicator}from "react-native";
 import React from "react";
 import PostModel, { Post } from "../models/PostModel";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AntDesign } from "@expo/vector-icons";
 
-const ListItem: FC<{
-  name: String;
-  description: String;
-  image: String;
-  userImage: String;
-  postId: String;
-  onDelete: any;
-  onEdit: any;
-}> = ({ name, description, image, userImage, postId, onDelete, onEdit }) => {
+const ListItem: FC<{name: String; description: String;image: String;userImage: String;postId: String;onDelete: any;onEdit: any;}>
+ = ({ name, description, image, userImage, postId, onDelete, onEdit }) => {
+
   const onDeletePress = async () => {
     try {
-      console.log("in delete post");
       const res = await PostModel.deletePost(postId);
       console.log("deleted");
       onDelete();
@@ -44,22 +27,11 @@ const ListItem: FC<{
   };
 
   return (
-    <TouchableHighlight underlayColor={"gainsboro"}>
+    <TouchableHighlight underlayColor={"#DDDDDD"}>
       <View style={styles.list}>
         <View style={styles.listRow}>
-          {userImage == "" && (
-            <Image
-              style={styles.userImage}
-              source={require("../assets/avatar.png")}
-            />
-          )}
-          {userImage != "" && (
-            <Image
-              style={styles.userImage}
-              source={{ uri: userImage.toString() }}
-            />
-          )}
-
+        {userImage == '' ?  <Image source={require("../assets/avatar.png")} style={styles.userImage}></Image>
+    : <Image source={{ uri: userImage.toString() }} style={styles.userImage}></Image>} 
           <Text style={styles.userName}>{name}</Text>
           <TouchableOpacity
             style={{ left: 90, marginTop: 5 }}
@@ -75,18 +47,9 @@ const ListItem: FC<{
           </TouchableOpacity>
         </View>
         <View style={styles.listRowTextContainer}>
-          {image == "url" && (
-            <Image
-              style={styles.postImage}
-              source={require("../assets/avatar.png")}
-            />
-          )}
-          {image != "url" && (
-            <Image
-              style={styles.postImage}
-              source={{ uri: image.toString() }}
-            />
-          )}
+        {image == '' ?  <Image source={require("../assets/avatar.png")} style={styles.postImage}></Image>
+    : <Image source={{ uri: image.toString() }} style={styles.postImage}></Image>} 
+        
           <Text style={styles.postContext}>{description}</Text>
         </View>
       </View>
@@ -160,7 +123,6 @@ const MyPosts: FC<{ route: any; navigation: any }> = ({
 
 const styles = StyleSheet.create({
   container: {
-    //marginTop: StatusBar.currentHeight,
     flex: 1,
   },
   list: {
@@ -180,7 +142,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
   },
   postImage: {
-    height: 320,
+    height: 250,
     width: 320,
     alignSelf: "center",
   },
@@ -199,7 +161,6 @@ const styles = StyleSheet.create({
   },
   flatlist: {
     flex: 1,
-    marginTop: StatusBar.currentHeight,
   },
   picker: {
     left: 10,
