@@ -1,5 +1,18 @@
-import { FC, useEffect, useState } from "react";
-import { ActivityIndicator, StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, TextInput } from 'react-native';
+import React, { FC, useEffect, useState } from "react";
+import {
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  Button,
+  Alert,
+  TextInput,
+  ScrollView,
+  ActivityIndicator,
+} from "react-native";
+import { AntDesign } from '@expo/vector-icons';
 
 import * as ImagePicker from "expo-image-picker";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -9,7 +22,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const DefaultPassword = "********";
 
-const Setting: FC<{ route: any; navigation: any; setToken: any }> = ({
+const Profile: FC<{ route: any; navigation: any; setToken: any }> = ({
   route,
   navigation,
   setToken,
@@ -20,9 +33,13 @@ const Setting: FC<{ route: any; navigation: any; setToken: any }> = ({
   const [avatarUri, setAvatarUri] = useState("");
   const [showActivityIndicator, setShowActivityIndicator] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [isShown, setIsShown] = useState(false);
+
 
   const setUserDetails = async () => {
     const userId: any = await AsyncStorage.getItem("userId");
+    console.log("current UserId:");
+    console.log(userId);
     if (userId != null) {
       const res: any = await UserModel.getUserById(userId);
       if (!res) {
@@ -30,11 +47,18 @@ const Setting: FC<{ route: any; navigation: any; setToken: any }> = ({
         return;
       }
       const user: any = res.data;
+      console.log("user: ");
+      console.log(user);
+      console.log("user name - " + user.name);
       setName(user.name);
       setAvatarUri(user.imageUrl);
       setEmail(user.email);
     }
   };
+
+  const handleClick = () => {
+    setIsShown(current => !current);
+  } 
 
   const askPermission = async () => {
     try {
@@ -50,6 +74,7 @@ const Setting: FC<{ route: any; navigation: any; setToken: any }> = ({
     askPermission();
     const unsubscribe = navigation.addListener("focus", async () => {
       setShowActivityIndicator(true);
+      console.log("focusing");
       setErrorMsg("");
       setUserDetails();
       setShowActivityIndicator(false);
@@ -84,8 +109,12 @@ const Setting: FC<{ route: any; navigation: any; setToken: any }> = ({
   };
 
   const onSaveCallback = async () => {
+    // need to add progress bar (called activity indicator)
+    console.log("save was pressed");
     setShowActivityIndicator(true);
+
     if (email == "" || name == "" || password == "") {
+      // setErrorMessage("please provide text and image");
       setErrorMsg("please provide name and password");
       setShowActivityIndicator(false);
       return;
@@ -130,7 +159,7 @@ const Setting: FC<{ route: any; navigation: any; setToken: any }> = ({
     }
     setShowActivityIndicator(false);
     setErrorMsg("");
-    //navigation.goBack();
+    navigation.goBack();
   };
 
   const onLogoutCallback = async () => {
@@ -142,77 +171,83 @@ const Setting: FC<{ route: any; navigation: any; setToken: any }> = ({
         setToken();
       }
     }
-    // TODO - need to set access token - so the user will be logged out from the app
-    // navigation.goBack();
   };
 
-  return (
-    <ScrollView>
-      <View style={styles.container}>
-        <ActivityIndicator
-          color={"#F05454"}
-          size={50}
-          animating={showActivityIndicator}
-          style={{ position: "absolute", marginTop: 250, marginStart: 170 }}        />
-        <View>
-          {avatarUri == "" && (
-            <Image
-              source={require("../assets/avatar.png")}
-              style={styles.avatar}
-            ></Image>
+  const EditDetails: FC = () => {
+    return (
+      <ScrollView>
+        <View style={styles.container}>
+          <ActivityIndicator
+            color={"#93D1C1"}
+            size={130}
+            animating={showActivityIndicator}
+            style={{ position: "absolute", marginTop: 230, marginStart: 140 }}
+          />
+          <View>
+            <TouchableOpacity onPress={openCamera}>
+              <Ionicons name={"camera"} style={styles.cameraButton} size={50} />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={openGallery}>
+              <Ionicons name={"image"} style={styles.galleryButton} size={50} />
+            </TouchableOpacity>
+          </View>
+          <TextInput
+            style={styles.input}
+            onChangeText={setEmail}
+            value={email}
+            placeholder={"Email Address"}
+          />
+          <TextInput
+            style={styles.input}
+            onChangeText={setName}
+            value={name}
+            placeholder={"Name"}
+          />
+          <TextInput
+            style={styles.input}
+            onChangeText={setPassword}
+            value={password}
+            placeholder={"password"}
+          />
+          <View style={styles.buttonsContainer}>
+            <TouchableOpacity onPress={onSaveCallback} style={styles.button}>
+              <Text style={styles.buttonText}>Save</Text>
+            </TouchableOpacity>
+          <TouchableOpacity onPress={onLogoutCallback} style={styles.button}>
+            <Text style={styles.buttonText}>Logout</Text>
+          </TouchableOpacity>
+          </View>
+          {errorMsg != "" && (
+            <Text
+              style={{
+                fontSize: 20,
+                color: "red",
+                alignSelf: "center",
+              }}
+            >
+              {errorMsg}
+            </Text>
           )}
-          {avatarUri != "" && (
-            <Image source={{ uri: avatarUri }} style={styles.avatar}></Image>
-          )}
+        </View>
+      </ScrollView>
+    );
+  }
 
-          <TouchableOpacity onPress={openCamera}>
-            <Ionicons name={"camera"} style={styles.cameraButton} size={50} />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={openGallery}>
-            <Ionicons name={"image"} style={styles.galleryButton} size={50} />
-          </TouchableOpacity>
-        </View>
-        <TextInput
-          style={styles.input}
-          onChangeText={setEmail}
-          value={email}
-          placeholder={"Email Address"}
-          editable={false}
-        />
-        <TextInput
-          style={styles.input}
-          onChangeText={setName}
-          value={name}
-          placeholder={"Name"}
-        />
-        <TextInput
-          style={styles.input}
-          onChangeText={setPassword}
-          value={password}
-          placeholder={"password"}
-        />
-        <View style={styles.buttonsContainer}>
-          <TouchableOpacity onPress={onSaveCallback} style={styles.button}>
-            <Text style={styles.buttonText}>Save</Text>
-          </TouchableOpacity>
-        </View>
-        <TouchableOpacity onPress={onLogoutCallback} style={styles.button}>
-          <Text style={styles.buttonText}>Logout</Text>
-        </TouchableOpacity>
-        {errorMsg != "" && (
-          <Text
-            style={{
-              fontSize: 20,
-              color: "red",
-              alignSelf: "center",
-            }}
-          >
-            {errorMsg}
-          </Text>
-        )}
-      </View>
-    </ScrollView>
-  );
+  return(
+    <ScrollView>
+    <View style={styles.container}>
+        {avatarUri != "" && ( <Image source={{ uri: avatarUri }} style={styles.avatar}></Image> )}
+      <TouchableOpacity onPress={handleClick}>
+      <Text style={styles.Details}>Email: {email} </Text>
+        <Text style={styles.Details}>Name: {name} </Text>
+        <AntDesign style={styles.Details} name={"edit"} size={25}></AntDesign>
+      </TouchableOpacity>
+    </View>
+    <View>{isShown ? <EditDetails></EditDetails> : null}</View>
+  </ScrollView>
+  )
+
+  
 };
 
 const styles = StyleSheet.create({
@@ -228,6 +263,12 @@ const styles = StyleSheet.create({
     margin: 40,
     width: "100%",
   },
+  Details:{
+    color: '#222831',
+    fontSize: 25,
+    textAlign: 'center',
+    // marginTop:20
+},
   input: {
     height: 40,
     margin: 12, // for space between the imput texts
@@ -236,24 +277,24 @@ const styles = StyleSheet.create({
     borderRadius: 3,
   },
   buttonsContainer: {
-    flex: 1,
+    // flex: 1,
     flexDirection: "row",
   },
   button: {
+    flex: 1,
     margin: 12,
     padding: 12,
-    marginLeft: 100,
-    width: 200,
-    backgroundColor: "#009999",
+    backgroundColor: '#F05454',
     borderRadius: 10,
   },
   buttonText: {
     textAlign: "center",
     color: "white",
+    fontWeight: "bold",
     fontSize: 20,
   },
   cameraButton: {
-    position: "absolute",
+    // position: "absolute",
     bottom: -10,
     left: 10,
     width: 50,
@@ -268,4 +309,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Setting;
+export default Profile;

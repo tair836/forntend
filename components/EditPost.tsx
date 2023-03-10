@@ -86,7 +86,7 @@ const EditPost: FC<{ route: any; navigation: any }> = ({
   };
 
   const onSaveCallback = async () => {
-    console.log("button was pressed");
+    console.log("edit????");
     setShowActivityIndicator(true);
 
     if (imageUri == "" || postDescription == "") {

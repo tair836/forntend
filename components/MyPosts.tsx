@@ -65,13 +65,13 @@ const ListItem: FC<{
             style={{ left: 90, marginTop: 5 }}
             onPress={onDeletePress}
           >
-            <AntDesign name={"delete"} size={30} color={"gray"}></AntDesign>
+            <AntDesign name={"delete"} size={30} color={"#F05454"}></AntDesign>
           </TouchableOpacity>
           <TouchableOpacity
             style={{ left: 95, margin: 5 }}
             onPress={onEditPress}
           >
-            <AntDesign name={"edit"} size={30} color={"gray"}></AntDesign>
+            <AntDesign name={"edit"} size={30} color={"#F05454"}></AntDesign>
           </TouchableOpacity>
         </View>
         <View style={styles.listRowTextContainer}>

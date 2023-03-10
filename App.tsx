@@ -14,7 +14,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import apiClient from "./api/ClientApi";
-import Profile from "./components/Setting";
+import Setting from "./components/Setting";
 import AddPost from "./components/AddPost";
 import AllPosts from "./components/AllPosts";
 import MyPosts from "./components/MyPosts";
@@ -39,7 +39,7 @@ const Posts: FC<{ route: any; navigation: any }> = ({
         options={{
           headerRight: () => (
             <TouchableOpacity onPress={addNewPost}>
-              <Ionicons name={"add-outline"} size={40} color={"gray"} />
+              <Ionicons name={"add-outline"} size={40} color={"#F05454"} />
             </TouchableOpacity>
           ),
         }}
@@ -66,7 +66,7 @@ const MyPost: FC<{ route: any; navigation: any }> = ({
         options={{
           headerRight: () => (
             <TouchableOpacity onPress={addNewPost}>
-              <Ionicons name={"add-outline"} size={40} color={"gray"} />
+              <Ionicons name={"add-outline"} size={40} color={"#F05454"} />
             </TouchableOpacity>
           ),
         }}
@@ -90,6 +90,7 @@ const Tab = createBottomTabNavigator();
 const App: FC = () => {
   const [token, setToken] = useState();
   updateToken(setToken);
+  console.log(token)
   if (!token) {
     return (
       <NavigationContainer>
@@ -114,7 +115,7 @@ const App: FC = () => {
         tabBarIcon: ({ focused, color, size }) => {
           let iconName = "";
           switch(route.name){
-            case 'Profile':
+            case 'Setting':
               iconName = focused ? 'person-circle' : 'person-circle-outline'
               break
             case 'MyPost':
@@ -136,16 +137,16 @@ const App: FC = () => {
           <Tab.Screen
             name="Posts"
             component={Posts}
-            options={{ headerShown: false }}
+            options={{ headerShown: false,headerTintColor: '#fff'}}
           />
           <Tab.Screen
             name="MyPost"
             component={MyPost}
-            options={{ headerShown: false }}
+            options={{ headerShown: false}}
           />
-          <Tab.Screen name="Profile">
+          <Tab.Screen name="Setting" options={{headerTintColor: '#F05454'}}>
             {(props) => (
-              <Profile
+              <Setting
                 route={props.route}
                 navigation={props.navigation}
                 setToken={setToken}

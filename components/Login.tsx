@@ -112,7 +112,6 @@ const Login: FC<{ route: any; navigation: any; setToken: any }> = ({
         value={email}
         placeholder={"Email Address"}
       />
-
       <TextInput
         style={styles.input}
         onChangeText={setPassword}
