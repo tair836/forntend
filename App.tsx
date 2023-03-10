@@ -95,7 +95,7 @@ const App: FC = () => {
     return (
       <NavigationContainer>
         <LoginStack.Navigator>
-          <LoginStack.Screen name="Login">
+          <LoginStack.Screen name="Login"  options={{headerTintColor: '#30475E'}}>
             {(props) => (
               <Login
                 route={props.route}
@@ -104,7 +104,7 @@ const App: FC = () => {
               />
             )}
           </LoginStack.Screen>
-          <LoginStack.Screen name="Register" component={Register} />
+          <LoginStack.Screen name="Register" component={Register} options={{headerTintColor: '#30475E'}} />
         </LoginStack.Navigator>
       </NavigationContainer>
     );
@@ -144,7 +144,7 @@ const App: FC = () => {
             component={MyPost}
             options={{ headerShown: false}}
           />
-          <Tab.Screen name="Setting" options={{headerTintColor: '#F05454'}}>
+          <Tab.Screen name="Setting" options={{headerTintColor: '#30475E'}}>
             {(props) => (
               <Setting
                 route={props.route}

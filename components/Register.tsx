@@ -1,13 +1,9 @@
 import React, { FC, useEffect, useState } from "react";
 import { StatusBar, StyleSheet, Text, View, Image, TouchableHighlight, TouchableOpacity, Button, Alert, TextInput, ScrollView, ActivityIndicator } from 'react-native';
-
 import * as ImagePicker from "expo-image-picker";
 import Ionicons from "@expo/vector-icons/Ionicons";
-
 import UserModel, { User } from "../models/UserModel";
-
 import * as WebBrowser from "expo-web-browser";
-import * as Google from "expo-auth-session/providers/google";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -20,37 +16,15 @@ const Signup: FC<{ route: any; navigation: any }> = ({
   const [password, setPassword] = useState("");
   const [avatarUri, setAvatarUri] = useState("");
   const [showActivityIndicator, setShowActivityIndicator] = useState(false);
-
-  // google variables
-  const [googleToken, setGoogleToken] = useState("");
-  //const [userInfo, setUserInfo] = useState(null);
   const [errorMsg, setErrorMsg] = useState("");
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", async () => {
       setShowActivityIndicator(true);
-      cleanScreen();
       setShowActivityIndicator(false);
     });
     return unsubscribe;
   });
-
-  useEffect(() => {
-  //   if (userInfo != null) {
-  //     setEmail(userInfo.email);
-  //     setAvatarUri(userInfo.picture);
-  //     setName(userInfo.given_name + " " + userInfo.family_name);
-  //   }
-  // }, [userInfo]);
-  })
-
-  const cleanScreen = () => {
-    setEmail("");
-    setName("");
-    setPassword("");
-    setAvatarUri("");
-    setErrorMsg("");
-  };
 
   const askPermission = async () => {
     try {
@@ -92,7 +66,6 @@ const Signup: FC<{ route: any; navigation: any }> = ({
   };
 
   const onRegisterCallback = async () => {
-    // need to add progress bar (called activity indicator)
     console.log("register was pressed");
     setShowActivityIndicator(true);
 
@@ -142,42 +115,6 @@ const Signup: FC<{ route: any; navigation: any }> = ({
     navigation.goBack();
   };
 
-  // const onGoogleCallback = () => {
-  //   ToastAndroid.show("google", ToastAndroid.LONG);
-  //   setUserInfo(null);
-  //   googlePromptAsync();
-  // };
-
-  // const [request, response, googlePromptAsync] = Google.useAuthRequest({
-  //   expoClientId:
-  //     "806690312426-07ugfudravdns682rc9fetqo8477utv4.apps.googleusercontent.com",
-  // });
-
-  // useEffect(() => {
-  //   if (response?.type === "success") {
-  //     setGoogleToken(response.authentication.accessToken);
-  //     getUserInfo();
-  //   }
-  // }, [response, googleToken]);
-
-  // const getUserInfo = async () => {
-  //   try {
-  //     const response = await fetch(
-  //       "https://www.googleapis.com/userinfo/v2/me",
-  //       {
-  //         headers: { Authorization: `Bearer ${googleToken}` },
-  //       }
-  //     );
-
-  //     const googleUser = await response.json();
-  //     setUserInfo(googleUser);
-  //     console.log(googleUser);
-  //     // navigation.navigate("Register", { email: user.email });
-  //   } catch (error) {
-  //     // Add your own error handler here
-  //   }
-  // };
-
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -187,16 +124,9 @@ const Signup: FC<{ route: any; navigation: any }> = ({
           animating={showActivityIndicator}
           style={{ position: "absolute", marginTop: 250, marginStart: 170 }}        />
         <View>
-          {avatarUri == "" && (
-            <Image
-              source={require("../assets/avatar.png")}
-              style={styles.avatar}
-            ></Image>
-          )}
-          {avatarUri != "" && (
-            <Image source={{ uri: avatarUri }} style={styles.avatar}></Image>
-          )}
-
+          {avatarUri == '' ?  <Image source={require("../assets/avatar.png")} style={styles.avatar}></Image>
+           : <Image source={{ uri: avatarUri }} style={styles.avatar}></Image>
+          }
           <TouchableOpacity onPress={openCamera}>
             <Ionicons name={"camera"} style={styles.cameraButton} size={50} />
           </TouchableOpacity>
@@ -220,7 +150,7 @@ const Signup: FC<{ route: any; navigation: any }> = ({
           style={styles.input}
           onChangeText={setPassword}
           value={password}
-          placeholder={"password"}
+          placeholder={"Password"}
         />
         <View style={styles.buttonsContainer}>
           <TouchableOpacity onPress={onCancelCallback} style={styles.button}>
@@ -230,12 +160,6 @@ const Signup: FC<{ route: any; navigation: any }> = ({
             <Text style={styles.buttonText}>SIGNUP</Text>
           </TouchableOpacity>
         </View>
-        {/* <View>
-          <Text style={styles.text}>Register with Google</Text>
-          <TouchableOpacity onPress={onGoogleCallback} style={styles.icon}>
-            <Ionicons name="md-logo-google" size={24} color="#006B6B" />
-          </TouchableOpacity>
-        </View> */}
         {errorMsg != "" && (
           <Text
             style={{
@@ -266,11 +190,11 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   input: {
-    height: 40,
+    height: 50,
     margin: 12, // for space between the imput texts
-    borderWidth: 1,
+    borderWidth: 2,
     padding: 10,
-    borderRadius: 3,
+    borderRadius: 3, 
   },
   buttonsContainer: {
     //flex: 1,
@@ -280,12 +204,13 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: 12,
     padding: 12,
-    backgroundColor: "#009999",
+    backgroundColor: '#F05454',
     borderRadius: 10,
   },
   buttonText: {
     textAlign: "center",
-    color: "white",
+    color: "#DDDDDD",
+    fontSize: 20,
   },
   cameraButton: {
     position: "absolute",

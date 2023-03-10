@@ -105,7 +105,6 @@ const Login: FC<{ route: any; navigation: any; setToken: any }> = ({
         size={50}
         animating={showActivityIndicator}
         style={{ position: "absolute", marginTop: 250, marginStart: 170 }}      />
-      <Text style={styles.text}>Login To the App</Text>
       <TextInput
         style={styles.input}
         onChangeText={setEmail}
@@ -116,14 +115,14 @@ const Login: FC<{ route: any; navigation: any; setToken: any }> = ({
         style={styles.input}
         onChangeText={setPassword}
         value={password}
-        placeholder={"password"}
+        placeholder={"Password"}
       />
       <View style={styles.buttonsContainer}>
         <TouchableOpacity onPress={onLoginCallback} style={styles.button}>
           <Text style={styles.buttonText}>LOGIN</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={onRegisterCallback} style={styles.button}>
-          <Text style={styles.buttonText}>Register</Text>
+          <Text style={styles.buttonText}>SIGNUP</Text>
         </TouchableOpacity>
       </View>
       {errorMsg != "" && (
@@ -143,10 +142,8 @@ const Login: FC<{ route: any; navigation: any; setToken: any }> = ({
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: StatusBar.currentHeight,
+    marginTop: 150,
     flex: 1,
-    //alignItems: "center",
-    // backgroundColor: "grey",
   },
   avatar: {
     height: 200,
@@ -156,15 +153,11 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   input: {
-    height: 40,
+    height: 50,
     margin: 12, // for space between the imput texts
     borderWidth: 2,
     padding: 10,
-    borderRadius: 3,
-    borderColor: "#006B6B",
-    width: 260,
-    alignSelf: "center",
-    fontSize: 15,
+    borderRadius: 3, 
   },
   buttonsContainer: {
     //flex: 1,
@@ -174,15 +167,12 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: 12,
     padding: 12,
-    backgroundColor: "#009999",
+    backgroundColor: '#F05454',
     borderRadius: 10,
-    width: 350,
-    height: 50,
   },
   buttonText: {
     textAlign: "center",
-    color: "white",
-    fontWeight: "bold",
+    color: "#DDDDDD",
     fontSize: 20,
   },
   cameraButton: {

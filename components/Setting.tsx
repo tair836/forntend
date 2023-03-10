@@ -236,7 +236,8 @@ const Profile: FC<{ route: any; navigation: any; setToken: any }> = ({
   return(
     <ScrollView>
     <View style={styles.container}>
-        {avatarUri != "" && ( <Image source={{ uri: avatarUri }} style={styles.avatar}></Image> )}
+    {avatarUri == '' ?  <Image source={require("../assets/avatar.png")} style={styles.avatar}></Image>
+    : <Image source={{ uri: avatarUri }} style={styles.avatar}></Image>} 
       <TouchableOpacity onPress={handleClick}>
       <Text style={styles.Details}>Email: {email} </Text>
         <Text style={styles.Details}>Name: {name} </Text>
@@ -289,8 +290,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     textAlign: "center",
-    color: "white",
-    fontWeight: "bold",
+    color: "#DDDDDD",
     fontSize: 20,
   },
   cameraButton: {
