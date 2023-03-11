@@ -37,6 +37,7 @@ const Posts: FC<{ route: any; navigation: any }> = ({
         name="AllPosts"
         component={AllPosts}
         options={{
+         headerTintColor: '#30475E',
           headerRight: () => (
             <TouchableOpacity onPress={addNewPost}>
               <Ionicons name={"add-outline"} size={40} color={"#F05454"} />

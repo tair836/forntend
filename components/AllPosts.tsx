@@ -13,17 +13,17 @@ import PostModel, { Post } from "../models/PostModel";
 
 const ListItem: FC<{
   userImage: String;
-  userEmail: String;
+  userName: String;
   text: String;
   postImage: String;
-}> = ({ userEmail, userImage, text, postImage }) => {
+}> = ({ userName, userImage, text, postImage }) => {
   return (
     <TouchableHighlight underlayColor={"#DDDDDD"}>
       <View style={styles.list}>
         <View style={styles.listRow}>
         {userImage == '' ?  <Image source={require("../assets/avatar.png")} style={styles.userImage}></Image>
     : <Image source={{ uri: userImage.toString() }} style={styles.userImage}></Image>} 
-          <Text style={styles.listRowName}>{userEmail}</Text>
+          <Text style={styles.listRowName}>{userName}</Text>
         </View>
         <View style={styles.listRowTextContainer}>
         {postImage == '' ?  <Image source={require("../assets/avatar.png")} style={styles.postImage}></Image>
@@ -67,7 +67,7 @@ const AllPosts: FC<{ route: any; navigation: any }> = ({
         keyExtractor={(post) => post.postId.toString()}
         renderItem={({ item }) => (
           <ListItem
-            userEmail={item.userEmail}
+            userName={item.userName}
             text={item.message}
             postImage={item.image}
             userImage={item.userImage}

@@ -5,8 +5,8 @@ import PostModel, { Post } from "../models/PostModel";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AntDesign } from "@expo/vector-icons";
 
-const ListItem: FC<{name: String; description: String;image: String;userImage: String;postId: String;onDelete: any;onEdit: any;}>
- = ({ name, description, image, userImage, postId, onDelete, onEdit }) => {
+const ListItem: FC<{userName: String; description: String;image: String;userImage: String;postId: String;onDelete: any;onEdit: any;}>
+ = ({ userName, description, image, userImage, postId, onDelete, onEdit }) => {
 
   const onDeletePress = async () => {
     try {
@@ -32,12 +32,11 @@ const ListItem: FC<{name: String; description: String;image: String;userImage: S
         <View style={styles.listRow}>
         {userImage == '' ?  <Image source={require("../assets/avatar.png")} style={styles.userImage}></Image>
     : <Image source={{ uri: userImage.toString() }} style={styles.userImage}></Image>} 
-          <Text style={styles.userName}>{name}</Text>
+          <Text style={styles.userName}>{userName}                </Text>
           <TouchableOpacity
             style={{ left: 90, marginTop: 5 }}
-            onPress={onDeletePress}
-          >
-            <AntDesign name={"delete"} size={30} color={"#F05454"}></AntDesign>
+            onPress={onDeletePress}>
+          <AntDesign name={"delete"} size={30} color={"#F05454"}></AntDesign>
           </TouchableOpacity>
           <TouchableOpacity
             style={{ left: 95, margin: 5 }}
@@ -103,7 +102,7 @@ const MyPosts: FC<{ route: any; navigation: any }> = ({
         keyExtractor={(post) => post.postId.toString()}
         renderItem={({ item }) => (
           <ListItem
-            name={item.userEmail}
+          userName={item.userName}
             description={item.message}
             image={item.image}
             userImage={item.userImage}

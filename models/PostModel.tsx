@@ -3,6 +3,7 @@ import FormData from "form-data";
 import UserModel from "./UserModel";
 
 export type Post = {
+  userName: String;
   userEmail: String;
   message: String;
   image: String;
@@ -30,11 +31,12 @@ const createPostsList = async (res: any) => {
       // console.log(user);
       console.log("user email - " + user.email);
       const st: Post = {
-        userEmail: user.email,
+        userName: user.name,
         message: list[i].message,
         image: list[i].imageUrl,
         postId: list[i]._id,
         userImage: user.imageUrl,
+        userEmail: user.email
       };
       console.log('mes', st.message)
       posts.push(st);
