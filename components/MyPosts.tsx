@@ -65,6 +65,7 @@ const MyPosts: FC<{ route: any; navigation: any }> = ({
   const [showActivityIndicator, setShowActivityIndicator] = useState(false);
 
   const onEdit = async (postId: String) => {
+    console.log('trtrtrtrtrtrtr')
     navigation.navigate("EditPost", { postId: postId });
   };
 

@@ -36,6 +36,7 @@ const createPostsList = async (res: any) => {
         postId: list[i]._id,
         userImage: user.imageUrl,
       };
+      console.log('mes', st.message)
       posts.push(st);
     }
   }
@@ -76,9 +77,10 @@ const getPostById = async (PostId: String) => {
 
 const editPostById = async (postId: String, Post: any) => {
   console.log("editPostById()");
-  console.log(postId);
+  console.log(postId, Post);
   let res: any = PostApi.editPost(postId, Post);
   if (res.status == 410) {
+    console.log('410?')
     res = await UserModel.refresh();
     if (!res) {
       // error in refresh
@@ -86,6 +88,7 @@ const editPostById = async (postId: String, Post: any) => {
       return;
     }
     res = await PostApi.editPost(postId, Post);
+    console.log('TAIR', res)
   }
   return res;
 };

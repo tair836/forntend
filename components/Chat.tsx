@@ -48,18 +48,8 @@ const ListItem: FC<{
         }}
       >
         <View style={styles.listRow}>
-          {image == "" && (
-            <Image
-              style={styles.userImage}
-              source={require("../assets/avatar.png")}
-            />
-          )}
-          {image != "" && (
-            <Image
-              style={styles.userImage}
-              source={{ uri: image.toString() }}
-            />
-          )}
+        {image == '' ?  <Image source={require("../assets/avatar.png")} style={styles.userImage}></Image>
+    : <Image source={{ uri: image.toString() }} style={styles.userImage}></Image>} 
           <Text style={styles.userName}>{sender}</Text>
         </View>
         <Text style={styles.messageText}>{message}</Text>

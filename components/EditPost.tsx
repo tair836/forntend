@@ -29,9 +29,11 @@ const EditPost: FC<{ route: any; navigation: any }> = ({
   let postId = route.params.postId;
 
   const setDetails = async () => {
-    console.log(postId);
+    console.log('postId', postId);
     const post = await PostModel.getPostById(postId);
+    console.log('post:::', post);
     if (post.status != "200") {
+      console.log('goback???')
       navigation.goBack();
     } else {
       setPostDescription(post.data.post.message);
@@ -86,7 +88,6 @@ const EditPost: FC<{ route: any; navigation: any }> = ({
   };
 
   const onSaveCallback = async () => {
-    console.log("edit????");
     setShowActivityIndicator(true);
 
     if (imageUri == "" || postDescription == "") {
@@ -97,7 +98,7 @@ const EditPost: FC<{ route: any; navigation: any }> = ({
 
     const post: NewPost = {
       message: postDescription,
-      imageUrl: "",
+      imageUrl: imageUri,
     };
     try {
       if (imageUri != "") {
@@ -105,8 +106,8 @@ const EditPost: FC<{ route: any; navigation: any }> = ({
         const url = await PostModel.uploadImage(imageUri);
         post.imageUrl = url;
       }
-      await PostModel.editPostById(postId, post);
-      console.log("posted");
+      const r = await PostModel.editPostById(postId, post);
+      console.log("posted", r);
       setShowActivityIndicator(false);
     } catch (err) {
       console.log("fail updating post");

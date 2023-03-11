@@ -114,7 +114,6 @@ const Profile: FC<{ route: any; navigation: any; setToken: any }> = ({
     setShowActivityIndicator(true);
 
     if (email == "" || name == "" || password == "") {
-      // setErrorMessage("please provide text and image");
       setErrorMsg("please provide name and password");
       setShowActivityIndicator(false);
       return;
